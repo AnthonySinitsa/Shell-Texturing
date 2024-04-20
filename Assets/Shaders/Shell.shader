@@ -1,10 +1,5 @@
 Shader "Custom/Shell"
 {
-    Properties
-    {
-        // Define properties here
-    }
-
     SubShader
     {
         Tags {
@@ -19,6 +14,14 @@ Shader "Custom/Shell"
 
             #include "UnityCG.cginc"
 
+            float Hash(uint n) {
+				// integer hash copied from Hugo Elias
+				n = (n << 13U) ^ n;
+				n = n * (n * n * 15731U + 0x789221U) + 0x1376312589U;
+				return float(n & uint(0x7fffffffU)) / float(0x7fffffff);
+			}
+
+            // Vertex data
             struct appdata
             {
                 float4 vertex : POSITION;
@@ -41,8 +44,18 @@ Shader "Custom/Shell"
 
             half4 frag(v2f i) : SV_Target
             {
-                // Visualize UV coordinates
-                return half4(i.uv.xy, 0, 1);
+                // Generate random number using the hash function
+                float rand = Hash(i.uv);
+
+                // If random number is greater than 0, output green color
+                if (rand > 0)
+                {
+                    return half4(0, 1, 0, 1);
+                }
+                else 
+                {
+                    return half4(0, 0, 0, 0);
+                }
             }
             ENDCG
         }
