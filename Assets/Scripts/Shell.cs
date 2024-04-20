@@ -1,18 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Shell : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [Range(1.0f, 1000.0f)]
+    public float Density = 100f; // Adjust the density here
+
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Get the renderer component and set the density value
+        Renderer renderer = GetComponent<Renderer>();
+        renderer.material.SetFloat("_Density", Density);
     }
 }
