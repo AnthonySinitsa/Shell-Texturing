@@ -2,13 +2,16 @@ Shader "Custom/Shell"
 {
     Properties
     {
+        _Density ("Density", Float) = 10
     }
-    
+
+    #include "HashFunction.cginc"
+
     SubShader
     {
         Tags { "RenderType"="Opaque" }
         LOD 200
-        
+
         Pass
         {
             CGPROGRAM
@@ -43,13 +46,16 @@ Shader "Custom/Shell"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                if (i.uv.x > 0 && i.uv.y > 0) // Condition to check UV coordinates
+                float density = _Density;
+                float2 uv = floor(i.uv * density) / density; // Calculate UV based on density
+                float hashValue = hash(uvec2(uv * 1000)); // Adjust hash input based on your needs
+                if (hashValue > 0)
                 {
                     return fixed4(0, 1, 0, 1); // Green color
                 }
                 else
                 {
-                    return float4(i.uv.xy, 0, 1); // Output UV as color
+                    return fixed4(0, 0, 0, 1); // Black color
                 }
             }
             ENDCG
