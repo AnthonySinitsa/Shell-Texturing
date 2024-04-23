@@ -35,3 +35,6 @@ now discard the black pixels
 to get some easy lighting just multiply the color * height^attenuation  (height of the quad)
 
 Shell Texturing made
+
+
+with hashing function we compute a seed from the uv coords

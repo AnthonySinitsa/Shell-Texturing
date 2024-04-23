@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0833859168693e44bf937ee763f415e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  density: 10
+  density: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
