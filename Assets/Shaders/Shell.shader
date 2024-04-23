@@ -43,7 +43,14 @@ Shader "Custom/Shell"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                return float4(i.uv.xy, 0, 1);
+                if (i.uv.x > 0 && i.uv.y > 0) // Condition to check UV coordinates
+                {
+                    return fixed4(0, 1, 0, 1); // Green color
+                }
+                else
+                {
+                    return float4(i.uv.xy, 0, 1); // Output UV as color
+                }
             }
             ENDCG
         }
