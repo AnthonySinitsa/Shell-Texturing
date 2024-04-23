@@ -1,6 +1,6 @@
-float hash(uvec2 x)
-{
-    uvec2 q = 1103515245U * ((x >> 1U) ^ (x.yx));
-    uint n = 1103515245U * ((q.x) ^ (q.y >> 3U));
-    return float(n) * (1.0 / float(0xffffffffU));
+float hash(uint n) {
+    // Integer hash copied from Hugo Elias
+    n = (n << 13U) ^ n;
+    n = n * (n * n * 15731U + 0x789221U) + 0x1376312589U;
+    return float(n & uint(0x7fffffffU)) / float(0x7fffffff);
 }

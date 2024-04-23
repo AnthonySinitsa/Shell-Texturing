@@ -6,10 +6,12 @@ Shader "Custom/Shell"
     }
 
     #include "HashFunction.cginc"
-
+    
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags {
+            "LightMode" = "ForwardBase"
+        }
         LOD 200
 
         Pass
@@ -48,7 +50,7 @@ Shader "Custom/Shell"
             {
                 float density = _Density;
                 float2 uv = floor(i.uv * density) / density; // Calculate UV based on density
-                float hashValue = hash(uvec2(uv * 1000)); // Adjust hash input based on your needs
+                float hashValue = hash(uint(uv.x * 1000) ^ uint(uv.y * 1000)); // Combine UV components and hash
                 if (hashValue > 0)
                 {
                     return fixed4(0, 1, 0, 1); // Green color

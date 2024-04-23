@@ -7,7 +7,7 @@ public class Shell : MonoBehaviour
 {
     public float density = 10f;
 
-    void Start()
+    void OnEnable()
     {
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.SetFloat("_Density", density);
