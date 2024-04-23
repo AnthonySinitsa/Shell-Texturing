@@ -35,6 +35,7 @@ Shader "Custom/Shell"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+            float _Density;
 
             #include "HashFunction.cginc"
 
