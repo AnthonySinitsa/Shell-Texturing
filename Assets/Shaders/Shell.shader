@@ -4,8 +4,6 @@ Shader "Custom/Shell"
     {
         _Density ("Density", Float) = 10
     }
-
-    #include "HashFunction.cginc"
     
     SubShader
     {
@@ -37,6 +35,8 @@ Shader "Custom/Shell"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
+
+            #include "HashFunction.cginc"
 
             v2f vert (appdata v)
             {
