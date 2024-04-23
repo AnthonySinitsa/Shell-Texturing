@@ -1,11 +1,14 @@
 Shader "Custom/Shell"
 {
+    Properties
+    {
+    }
+    
     SubShader
     {
-        Tags {
-			"LightMode" = "ForwardBase"
-		}
-
+        Tags { "RenderType"="Opaque" }
+        LOD 200
+        
         Pass
         {
             CGPROGRAM
@@ -14,52 +17,33 @@ Shader "Custom/Shell"
 
             #include "UnityCG.cginc"
 
-            float Hash(uint n) {
-                // integer hash copied from Hugo Elias
-				n = (n << 13U) ^ n;
-				n = n * (n * n * 15731U + 0x789221U) + 0x1376312589U;
-				return float(n & uint(0x7fffffffU)) / float(0x7fffffff);
-			}
-            
-            // Vertex data
             struct appdata
             {
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
             };
-            
+
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                UNITY_FOG_COORDS(1)
                 float4 vertex : SV_POSITION;
             };
-            
-            float _Density;
 
-            float Density = float2(_Density, _Density);
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
 
-            v2f vert(appdata v)
+            v2f vert (appdata v)
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv * Density;
+                o.uv = v.uv;
                 return o;
             }
 
-            half4 frag(v2f i) : SV_Target
+            fixed4 frag (v2f i) : SV_Target
             {
-                // Generate random number using the hash function
-                float rand = Hash(i.uv.x + i.uv.y * 1000);
-
-                // If random number is greater than 0, output green color
-                if (rand > 0)
-                {
-                    return half4(0, 1, 0, 1);
-                }
-                else 
-                {
-                    return half4(0, 0, 0, 0);
-                }
+                return float4(i.uv.xy, 0, 1);
             }
             ENDCG
         }
