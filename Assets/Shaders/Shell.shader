@@ -15,6 +15,7 @@ Shader "Custom/Shell"
         {
             Cull Off
             CGPROGRAM
+            
             #pragma vertex vert
             #pragma fragment frag
 
@@ -44,7 +45,7 @@ Shader "Custom/Shell"
             {
                 v2f o;
                 // Scale and translate UV coordinates to show only a 10x10 set of pixels
-                o.uv = (v.uv * _Density) - float2(1, 1);
+                o.uv = v.uv * _Density;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
             }
@@ -56,7 +57,7 @@ Shader "Custom/Shell"
                 // Map UV coordinates to a 10x10 grid
                 uv = floor(uv * _Density) / _Density;
 
-                float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 100)); // Combine UV components and hash
+                float hashValue = hash(uint(uv.x + 10) * uint(uv.y + 100)); // Combine UV components and hash
                 
                 // Map hash value to color range (e.g., grayscale)
                 float grayValue = hashValue * 0.5 + 0.5; // Map range [-1, 1] to [0, 1]
