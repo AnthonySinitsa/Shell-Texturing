@@ -2,7 +2,7 @@ Shader "Custom/Shell"
 {
     Properties
     {
-        _Density ("Density", Float) = 10
+        _Density ("Density", Float) = 100
     }
     
     SubShader
@@ -43,17 +43,22 @@ Shader "Custom/Shell"
             v2f vert (appdata v)
             {
                 v2f o;
+                // Scale and translate UV coordinates to show only a 10x10 set of pixels
+                o.uv = (v.uv * _Density) - float2(1, 1);
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv * _Density;
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 uv = i.uv; // Use unscaled UV coordinates
-                float hashValue = hash(uint(uv.x * 1000) ^ uint(uv.y * 1000)); // Combine UV components and hash
+                float2 uv = i.uv; // Use scaled UV coordinates
                 
-                // Map hash value to color range (grayscale)
+                // Map UV coordinates to a 10x10 grid
+                uv = floor(uv * _Density) / _Density;
+
+                float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 100)); // Combine UV components and hash
+                
+                // Map hash value to color range (e.g., grayscale)
                 float grayValue = hashValue * 0.5 + 0.5; // Map range [-1, 1] to [0, 1]
                 
                 return fixed4(grayValue, grayValue, grayValue, 1); // Output grayscale color
