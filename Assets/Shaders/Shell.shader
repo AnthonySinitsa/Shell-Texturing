@@ -53,19 +53,15 @@ Shader "Custom/Shell"
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 uv = i.uv; // Use scaled UV coordinates
-                
-                // Map UV coordinates to a 10x10 grid
-                uv = floor(uv * _Density) / _Density;
+
+                uv = floor(uv); // Round UV coordinates to the nearest integer
 
                 float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 1000)); // Combine UV components and hash
-                
-                // Map hash value to color range (e.g., grayscale)
-                float grayValue = hashValue * 0.5 + 0.5; // Map range [-1, 1] to [0, 1]
-                
-                // return fixed4(grayValue, grayValue, grayValue, 1); // Output grayscale color
-                
+
+                // return fixed4(hashValue, hashValue, hashValue, 1);
+
                 // Check if grayValue is greater than 0
-                if (grayValue > 0)
+                if (hashValue > 0.1)
                 {
                     return fixed4(0, 1, 0, 1); // Green color
                 }
