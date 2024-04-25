@@ -57,12 +57,22 @@ Shader "Custom/Shell"
                 // Map UV coordinates to a 10x10 grid
                 uv = floor(uv * _Density) / _Density;
 
-                float hashValue = hash(uint(uv.x + 10) * uint(uv.y + 100)); // Combine UV components and hash
+                float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 1000)); // Combine UV components and hash
                 
                 // Map hash value to color range (e.g., grayscale)
                 float grayValue = hashValue * 0.5 + 0.5; // Map range [-1, 1] to [0, 1]
                 
-                return fixed4(grayValue, grayValue, grayValue, 1); // Output grayscale color
+                // return fixed4(grayValue, grayValue, grayValue, 1); // Output grayscale color
+                
+                // Check if grayValue is greater than 0
+                if (grayValue > 0)
+                {
+                    return fixed4(0, 1, 0, 1); // Green color
+                }
+                else
+                {
+                    return fixed4(0, 0, 0, 1); // Black color
+                }
             }
             ENDCG
         }
