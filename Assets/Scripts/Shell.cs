@@ -18,7 +18,7 @@ public class ShellSpawner : MonoBehaviour
         for (int i = 0; i < shellCount; i++)
         {
             // Calculate position for the new quad
-            Vector3 position = transform.position + Vector3.up * i * 0.1f;
+            Vector3 position = transform.position + Vector3.up * i * 0.01f;
 
             // Instantiate the quad as a child of the prefab with X rotation set to 90 degrees
             GameObject quad = Instantiate(quadPrefab, position, Quaternion.Euler(90f, 0f, 0f), transform);
