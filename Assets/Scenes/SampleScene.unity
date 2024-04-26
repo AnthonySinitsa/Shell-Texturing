@@ -354,7 +354,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   quadPrefab: {fileID: 6387279715055423320, guid: df229d1f6933b8b4ebe888daa8765a30, type: 3}
-  shellCount: 10
+  shellCount: 2
   density: 10
 --- !u!1001 &6056220592830830555
 PrefabInstance:
