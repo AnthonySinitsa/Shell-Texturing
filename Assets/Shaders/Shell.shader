@@ -44,7 +44,6 @@ Shader "Custom/Shell"
             v2f vert (appdata v)
             {
                 v2f o;
-                // Scale and translate UV coordinates to show only a 10x10 set of pixels
                 o.uv = v.uv * _Density;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
@@ -52,16 +51,14 @@ Shader "Custom/Shell"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 uv = i.uv; // Use scaled UV coordinates
-
-                uv = floor(uv); // Round UV coordinates to the nearest integer
+                float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
 
                 float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 1000)); // Combine UV components and hash
 
                 // return fixed4(hashValue, hashValue, hashValue, 1);
 
-                // Check if grayValue is greater than 0
-                if (hashValue > 0.1)
+                // Check if hashValue is greater than 0
+                if (hashValue > 0.02)
                 {
                     return fixed4(0, 1, 0, 1); // Green color
                 }
