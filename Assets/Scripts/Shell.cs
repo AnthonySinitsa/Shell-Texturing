@@ -26,6 +26,9 @@ public class ShellSpawner : MonoBehaviour
             // Set the density value for the quad
             Renderer renderer = quad.GetComponent<Renderer>();
             renderer.material.SetFloat("_Density", density);
+
+            // set property in shader
+            renderer.material.SetFloat("_ShellCount", shellCount);
         }
     }
 }

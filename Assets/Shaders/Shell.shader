@@ -3,6 +3,7 @@ Shader "Custom/Shell"
     Properties
     {
         _Density ("Density", Float) = 100
+        _ShellCount ("Shell Count", FLoat) = 10
     }
     
     SubShader
@@ -58,7 +59,7 @@ Shader "Custom/Shell"
                 // return fixed4(hashValue, hashValue, hashValue, 1);
 
                 // Check if hashValue is greater than 0
-                if (hashValue > 0.02)
+                if (hashValue > 0.01)
                 {
                     return fixed4(0, 1, 0, 1); // Green color
                 }
