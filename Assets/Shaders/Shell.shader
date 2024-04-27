@@ -3,14 +3,12 @@ Shader "Custom/Shell"
     Properties
     {
         _Density ("Density", Float) = 100
-        _ShellCount ("Shell Count", FLoat) = 10
+        _Threshold ("Threshold", Float) = 0.01
     }
     
     SubShader
     {
-        Tags {
-            "LightMode" = "ForwardBase"
-        }
+        Tags { "LightMode" = "ForwardBase" }
 
         Pass
         {
@@ -39,6 +37,7 @@ Shader "Custom/Shell"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float _Density;
+            float _Threshold;
 
             #include "HashFunction.cginc"
 
@@ -58,8 +57,10 @@ Shader "Custom/Shell"
 
                 // return fixed4(hashValue, hashValue, hashValue, 1);
 
+                _Threshold += 0.01;
+
                 // Check if hashValue is greater than 0
-                if (hashValue > 0.01)
+                if (hashValue > _Threshold)
                 {
                     return fixed4(0, 1, 0, 1); // Green color
                 }
