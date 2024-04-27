@@ -3,18 +3,18 @@ Shader "Custom/Shell"
     Properties
     {
         _Density ("Density", Float) = 100
+        _Threshold ("Threshold", Float) = 0.01
     }
     
     SubShader
     {
-        Tags {
-            "LightMode" = "ForwardBase"
-        }
+        Tags { "LightMode" = "ForwardBase" }
 
         Pass
         {
             Cull Off
             CGPROGRAM
+            
             #pragma vertex vert
             #pragma fragment frag
 
@@ -37,31 +37,37 @@ Shader "Custom/Shell"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             float _Density;
+            float _Threshold;
 
             #include "HashFunction.cginc"
 
             v2f vert (appdata v)
             {
                 v2f o;
-                // Scale and translate UV coordinates to show only a 10x10 set of pixels
-                o.uv = (v.uv * _Density) - float2(1, 1);
+                o.uv = v.uv * _Density;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 return o;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 uv = i.uv; // Use scaled UV coordinates
-                
-                // Map UV coordinates to a 10x10 grid
-                uv = floor(uv * _Density) / _Density;
+                float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
 
-                float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 100)); // Combine UV components and hash
-                
-                // Map hash value to color range (e.g., grayscale)
-                float grayValue = hashValue * 0.5 + 0.5; // Map range [-1, 1] to [0, 1]
-                
-                return fixed4(grayValue, grayValue, grayValue, 1); // Output grayscale color
+                float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 1000)); // Combine UV components and hash
+
+                // return fixed4(hashValue, hashValue, hashValue, 1);
+
+                _Threshold += 0.01;
+
+                // Check if hashValue is greater than 0
+                if (hashValue > _Threshold)
+                {
+                    return fixed4(0, 1, 0, 1); // Green color
+                }
+                else
+                {
+                    return fixed4(0, 0, 0, 1); // Black color
+                }
             }
             ENDCG
         }
