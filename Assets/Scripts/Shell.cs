@@ -3,7 +3,11 @@ using UnityEngine;
 public class ShellSpawner : MonoBehaviour
 {
     public GameObject quadPrefab;
+
+    [Range(1, 256)]
     public int shellCount = 10;
+
+    [Range(1.0f, 1000.0f)]
     public float density = 10f;
 
     void Update()
@@ -26,8 +30,6 @@ public class ShellSpawner : MonoBehaviour
             // Set the density value for the quad
             Renderer renderer = quad.GetComponent<Renderer>();
             renderer.material.SetFloat("_Density", density);
-
-            // set property in shader
             renderer.material.SetFloat("_ShellCount", shellCount);
         }
     }
