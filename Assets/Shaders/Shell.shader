@@ -57,17 +57,12 @@ Shader "Custom/Shell"
 
                 // return fixed4(hashValue, hashValue, hashValue, 1);
 
-                _Threshold += 0.01;
+                float threshold = _Threshold;
 
-                // Check if hashValue is greater than 0
-                if (hashValue > _Threshold)
-                {
-                    return fixed4(0, 1, 0, 1); // Green color
+                if (hashValue <= threshold) {
+                    discard;
                 }
-                else
-                {
-                    return fixed4(0, 0, 0, 1); // Black color
-                }
+                return fixed4(0, 1, 0, 1); // Green color
             }
             ENDCG
         }

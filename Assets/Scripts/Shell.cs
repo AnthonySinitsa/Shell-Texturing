@@ -10,7 +10,9 @@ public class ShellSpawner : MonoBehaviour
     [Range(1.0f, 1000.0f)]
     public float density = 10f;
 
-    void Update()
+    private float threshold = 0.6f;
+
+    void Start()
     {
         // Destroy previously spawned quads
         foreach (Transform child in transform)
@@ -31,6 +33,9 @@ public class ShellSpawner : MonoBehaviour
             Renderer renderer = quad.GetComponent<Renderer>();
             renderer.material.SetFloat("_Density", density);
             renderer.material.SetFloat("_ShellCount", shellCount);
+            renderer.material.SetFloat("_Threshold", threshold);
+
+            threshold += 0.01f;
         }
     }
 }
