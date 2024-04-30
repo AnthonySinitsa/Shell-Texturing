@@ -4,6 +4,10 @@ Shader "Custom/Shell"
     {
         _Density ("Density", Float) = 100
         _Threshold ("Threshold", Float) = 0.01
+        _Attenuation ("Attenuation", Float) = 1.0
+        _ShellIndex ("Shell Index", Int) = 0
+        _NoiseMin ("NoiseMin", Float) = 0
+        _NoiseMax ("NoiseMax", Float) = 0
     }
     
     SubShader
@@ -18,19 +22,20 @@ Shader "Custom/Shell"
             #pragma vertex vert
             #pragma fragment frag
 
-            #include "UnityCG.cginc"
             #include "UnityPBSLighting.cginc"
             #include "AutoLight.cginc"
 
             struct appdata
             {
                 float4 vertex : POSITION;
+                float3 normal : NORMAL;
                 float2 uv : TEXCOORD0;
             };
 
             struct v2f
             {
                 float2 uv : TEXCOORD0;
+                float3 normal : TEXCOORD1;
                 float4 vertex : SV_POSITION;
             };
 
@@ -38,14 +43,19 @@ Shader "Custom/Shell"
             float4 _MainTex_ST;
             float _Density;
             float _Threshold;
+            float _Attenuation;
+            int _ShellIndex;
+            float _NoiseMin;
+            float _NoiseMax;
 
             #include "HashFunction.cginc"
 
             v2f vert (appdata v)
             {
                 v2f o;
-                o.uv = v.uv * _Density;
+                o.normal = normalize(UnityObjectToWorldNormal(v.normal));
                 o.vertex = UnityObjectToClipPos(v.vertex);
+                o.uv = v.uv * _Density;
                 return o;
             }
 
@@ -53,16 +63,31 @@ Shader "Custom/Shell"
             {
                 float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
 
-                float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 1000)); // Combine UV components and hash
+                uint2 tid = uv;
+                uint seed = tid.x + 100 * tid.y + 100 * 10;
+
+                float hashValue = lerp(_NoiseMin, _NoiseMax, hash(seed));
+
+                // float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 1000));
 
                 // return fixed4(hashValue, hashValue, hashValue, 1);
 
-                float threshold = _Threshold;
+                float threshold = _Threshold * _ShellIndex;
+                float attenuation = pow(threshold, _Attenuation);
+
+                // if (hashValue > _Threshold)
+                // {
+                //     return fixed4(0, 1, 0, 1); // Green color
+                // }
+                // else
+                // {
+                //     return fixed4(0, 0, 0, 1); // Black color
+                // }
 
                 if (hashValue <= threshold) {
                     discard;
                 }
-                return fixed4(0, 1, 0, 1); // Green color
+                return fixed4(0, 1, 0, 1) * attenuation; // Green color
             }
             ENDCG
         }
