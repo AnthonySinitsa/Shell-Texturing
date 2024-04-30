@@ -4,6 +4,8 @@ Shader "Custom/Shell"
     {
         _Density ("Density", Float) = 100
         _Threshold ("Threshold", Float) = 0.01
+        _Attenuation ("Attenuation", Float) = 1.0
+        _ShellIndex ("Shell Index", Int) = 0
     }
     
     SubShader
@@ -38,6 +40,8 @@ Shader "Custom/Shell"
             float4 _MainTex_ST;
             float _Density;
             float _Threshold;
+            float _Attenuation;
+            int _ShellIndex;
 
             #include "HashFunction.cginc"
 
@@ -57,12 +61,22 @@ Shader "Custom/Shell"
 
                 // return fixed4(hashValue, hashValue, hashValue, 1);
 
-                float threshold = _Threshold;
+                float threshold = _Threshold * _ShellIndex;
+                float attenuation = pow(threshold, _Attenuation);
+
+                // if (hashValue > _Threshold)
+                // {
+                //     return fixed4(0, 1, 0, 1); // Green color
+                // }
+                // else
+                // {
+                //     return fixed4(0, 0, 0, 1); // Black color
+                // }
 
                 if (hashValue <= threshold) {
                     discard;
                 }
-                return fixed4(0, 1, 0, 1); // Green color
+                return fixed4(0, 1, 0, 1) * attenuation; // Green color
             }
             ENDCG
         }

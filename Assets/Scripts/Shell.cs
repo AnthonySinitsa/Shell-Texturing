@@ -5,12 +5,12 @@ public class ShellSpawner : MonoBehaviour
     public GameObject quadPrefab;
 
     [Range(1, 256)]
-    public int shellCount = 10;
+    public int shellCount = 16;
 
     [Range(1.0f, 1000.0f)]
     public float density = 10f;
 
-    private float threshold = 0.6f;
+    private float threshold = 0.01f;
 
     void Start()
     {
@@ -34,6 +34,7 @@ public class ShellSpawner : MonoBehaviour
             renderer.material.SetFloat("_Density", density);
             renderer.material.SetFloat("_ShellCount", shellCount);
             renderer.material.SetFloat("_Threshold", threshold);
+            renderer.material.SetInt("_ShellIndex", i);
 
             threshold += 0.01f;
         }
