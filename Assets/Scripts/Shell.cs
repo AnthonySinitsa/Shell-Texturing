@@ -7,8 +7,18 @@ public class ShellSpawner : MonoBehaviour
     [Range(1, 256)]
     public int shellCount = 16;
 
+
     [Range(1.0f, 1000.0f)]
     public float density = 10f;
+
+
+    [Range(0.0f, 1.0f)]
+    public float noiseMin = 0.0f;
+
+
+    [Range(0.0f, 1.0f)]
+    public float noiseMax = 1.0f;
+
 
     private float threshold = 0.01f;
 
@@ -35,6 +45,8 @@ public class ShellSpawner : MonoBehaviour
             renderer.material.SetFloat("_ShellCount", shellCount);
             renderer.material.SetFloat("_Threshold", threshold);
             renderer.material.SetInt("_ShellIndex", i);
+            renderer.material.SetFloat("_NoiseMin", noiseMin);
+            renderer.material.SetFloat("_NoiseMax", noiseMax);
 
             threshold += 0.01f;
         }
