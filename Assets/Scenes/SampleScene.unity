@@ -356,6 +356,8 @@ MonoBehaviour:
   quadPrefab: {fileID: 6387279715055423320, guid: df229d1f6933b8b4ebe888daa8765a30, type: 3}
   shellCount: 16
   density: 100
+  noiseMin: 0
+  noiseMax: 1
 --- !u!1001 &6056220592830830555
 PrefabInstance:
   m_ObjectHideFlags: 0
