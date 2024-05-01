@@ -75,8 +75,8 @@ Shader "Custom/Shell"
                 if (hashValue <= threshold) {
                     discard;
                 }
-                return fixed4(0, 1, 0, 1) * attenuation;
                 // return fixed4(hashValue, hashValue, hashValue, 1);
+                return fixed4(0, 1, 0, 1) * attenuation;
             }
             ENDCG
         }
