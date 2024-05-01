@@ -68,26 +68,14 @@ Shader "Custom/Shell"
 
                 float hashValue = lerp(_NoiseMin, _NoiseMax, hash(seed));
 
-                // float hashValue = hash(uint(uv.x + 100) * uint(uv.y + 1000));
-
-                // return fixed4(hashValue, hashValue, hashValue, 1);
-
                 float threshold = _Threshold * _ShellIndex;
                 float attenuation = pow(threshold, _Attenuation);
-
-                // if (hashValue > _Threshold)
-                // {
-                //     return fixed4(0, 1, 0, 1); // Green color
-                // }
-                // else
-                // {
-                //     return fixed4(0, 0, 0, 1); // Black color
-                // }
 
                 if (hashValue <= threshold) {
                     discard;
                 }
-                return fixed4(0, 1, 0, 1) * attenuation; // Green color
+                return fixed4(0, 1, 0, 1) * attenuation;
+                // return fixed4(hashValue, hashValue, hashValue, 1);
             }
             ENDCG
         }
