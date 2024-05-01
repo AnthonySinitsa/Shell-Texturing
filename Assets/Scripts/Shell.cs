@@ -32,7 +32,7 @@ public class Shell : MonoBehaviour
         for (int i = 0; i < shellCount; i++)
         {
             // Calculate the y-position for the new quad
-            float yPos = step * (i + 0.5f); // Add 0.5f to position the quad in the middle of the step
+            float yPos = step * i;
 
             // Instantiate the quad as a child of the prefab with X rotation set to 90 degrees
             GameObject quad = Instantiate(quadPrefab, transform);

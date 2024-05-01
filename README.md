@@ -1,6 +1,9 @@
 # Shell-Texturing WIP
 
-![Grass](image.png)
+#### Iteration 1
+![Grass](image0.png)
+#### Iteration 2
+![Grass](image1.png)
  
 render quad
 
@@ -38,5 +41,6 @@ to get some easy lighting just multiply the color * height^attenuation  (height 
 
 Shell Texturing made
 
-
 with hashing function we compute a seed from the uv coords
+
+the quads need to spawn between 0.0 and 0.1, but the threshold should be between 0.0 and 1.0

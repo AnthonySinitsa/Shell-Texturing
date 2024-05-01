@@ -64,13 +64,14 @@ Shader "Custom/Shell"
                 float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
 
                 uint2 tid = uv;
-                uint seed = tid.x + 100 * tid.y + 100 * 10;
+                uint seed = tid.x + 100 * tid.y;
 
                 float hashValue = lerp(_NoiseMin, _NoiseMax, hash(seed));
 
-                float threshold = _Threshold * _ShellIndex;
+                float threshold = _Threshold * 10.0;
                 float attenuation = pow(threshold, _Attenuation);
 
+                // max is 0.99996
                 if (hashValue <= threshold) {
                     discard;
                 }
