@@ -5,26 +5,25 @@ public class Shell : MonoBehaviour
 {
     public GameObject quadPrefab;
 
+
     [Range(1, 256)]
     public int shellCount = 16;
+
 
     [Range(1.0f, 1000.0f)]
     public float density = 10f;
 
+
     [Range(0.0f, 1.0f)]
     public float noiseMin = 0.0f;
+
 
     [Range(0.0f, 1.0f)]
     public float noiseMax = 1.0f;
 
-    void Start()
-    {
-        // Destroy previously spawned quads
-        foreach (Transform child in transform)
-        {
-            Destroy(child.gameObject);
-        }
 
+    void OnEnable()
+    {
         // Calculate the step size for positioning the quads evenly between 0.0 and 0.1
         float step = 0.1f / shellCount;
 
