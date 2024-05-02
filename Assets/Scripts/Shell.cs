@@ -24,12 +24,23 @@ public class Shell : MonoBehaviour
 
     void OnEnable()
     {
+
+        // Destroy any existing quads
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         // Calculate the step size for positioning the quads evenly between 0.0 and 0.1
         float step = 0.1f / shellCount;
 
         // Spawn new quads
         for (int i = 0; i < shellCount; i++)
         {
+
+            // Calculate the normalized y-position for the new quad
+            float yPosNormalized = (float)i / (float)(shellCount - 1);
+
             // Calculate the y-position for the new quad
             float yPos = step * i;
 
@@ -41,7 +52,6 @@ public class Shell : MonoBehaviour
             Renderer renderer = quad.GetComponent<Renderer>();
             renderer.material.SetFloat("_Density", density);
             renderer.material.SetFloat("_ShellCount", shellCount);
-            // Set threshold based on quad's y-position
             renderer.material.SetFloat("_Threshold", yPos); 
             renderer.material.SetInt("_ShellIndex", i);
             renderer.material.SetFloat("_NoiseMin", noiseMin);
