@@ -4,43 +4,53 @@
 ![Grass](image0.png)
 #### Iteration 2
 ![Grass](image1.png)
+
+### Steps Taken:
  
-render quad
+- Render quad
 
-green pixel is grass and black is no grass
+- Green pixel is grass and black is no grass
 
-use white noise for random numbers
+- Use white noise for random numbers
 
-hash function that takes seed number and shuffle around alot that it is unique
+- Hash function that takes seed number and shuffle around alot that it is unique
 
-uv coords range from top left to bottom right
+- UV coords range from top left to bottom right
 
-take seed through hashing function to give us random number between 0-1
+- Take seed through hashing function to give us random number between 0-1
 
-if value is > 0 return green
+- If value is > 0 return green
 
-plane should be entirely green(like one big grass)
+- Plane should be entirely green(like one big grass)
 
-to get more blades of grass  seed = ⌊uv * density⌋  (density being the width and height of the field)
+- To get more blades of grass  seed = ⌊uv * density⌋  (density being the width and height of the field)
 
-with a density of 100, we have a field of 100 x 100 blades of grass
+- With a density of 100, we have a field of 100 x 100 blades of grass
 
-draw another quad(slightly higher than the ground)
+- Draw another quad(slightly higher than the ground)
 
-quad seed number will be the same which is good
+- Quad seed number will be the same which is good
 
-but now instead of if(rng > 0) do if(rng > NewQuadHeight)
+- Tut now instead of if(rng > 0) do if(rng > NewQuadHeight)
 
-then draw new square with the new height
+- Then draw new square with the new height
 
-draw 16 squares
+- Draw 16 squares
 
-now discard the black pixels
+- Now discard the black pixels
 
-to get some easy lighting just multiply the color * height^attenuation  (height of the quad)
+- To get some easy lighting just multiply the color * height^attenuation  (height of the quad)
 
-Shell Texturing made
+- Shell Texturing made
 
-with hashing function we compute a seed from the uv coords
+- With hashing function we compute a seed from the uv coords
 
-the quads need to spawn between 0.0 and 0.1, but the threshold should be between 0.0 and 1.0
+- The quads need to spawn between 0.0 and 0.1, but the threshold should be between 0.0 and 1.0
+
+- We can translate shell textured grass from a plane to any arbitrary mesh by extyruding the shell out from the normal of the base vertex:
+
+![vertexNormal](vertexNormal.png)
+
+- So for a sphere, draw a bunch of spheres on top of each other
+
+- Then in the vertex shader, extrude the shells outwards from the normals based on desired distance
