@@ -1,5 +1,5 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public class Shell : MonoBehaviour
 {
@@ -8,6 +8,10 @@ public class Shell : MonoBehaviour
 
     [Range(1, 256)]
     public int shellCount = 16;
+
+
+    [Range(0.0f, 1.0f)]
+    public float shellLength = 0.15f;
 
 
     [Range(1.0f, 1000.0f)]
@@ -50,10 +54,11 @@ public class Shell : MonoBehaviour
             quad.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
 
             Renderer renderer = quad.GetComponent<Renderer>();
-            renderer.material.SetFloat("_ShellCount", shellCount);
+            renderer.material.SetInt("_ShellCount", shellCount);
+            renderer.material.SetInt("_ShellIndex", i);
+            renderer.material.SetFloat("_ShellLength", shellLength);
             renderer.material.SetFloat("_Density", density);
             renderer.material.SetFloat("_Threshold", yPos); 
-            renderer.material.SetInt("_ShellIndex", i);
             renderer.material.SetFloat("_NoiseMin", noiseMin);
             renderer.material.SetFloat("_NoiseMax", noiseMax);
             renderer.material.SetVector("_ShellColor", shellColor);
