@@ -41,13 +41,11 @@
 
 - To get some easy lighting just multiply the color * height^attenuation  (height of the quad)
 
-- Shell Texturing made
-
 - With hashing function we compute a seed from the uv coords
 
 - The quads need to spawn between 0.0 and 0.1, but the threshold should be between 0.0 and 1.0
 
-- We can translate shell textured grass from a plane to any arbitrary mesh by extyruding the shell out from the normal of the base vertex:
+- We can translate shell textured grass from a plane to any arbitrary mesh by extruding the shell out from the normal of the base vertex:
 
 ![vertexNormal](vertexNormal.png)
 
