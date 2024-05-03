@@ -162,7 +162,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 470455908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0833859168693e44bf937ee763f415e, type: 3}
   m_Name: 
@@ -172,6 +172,7 @@ MonoBehaviour:
   density: 100
   noiseMin: 0
   noiseMax: 1
+  shellColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +408,7 @@ MonoBehaviour:
   density: 100
   noiseMin: 0
   noiseMax: 1
+  shellColor: {r: 0, g: 1, b: 0.051280737, a: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

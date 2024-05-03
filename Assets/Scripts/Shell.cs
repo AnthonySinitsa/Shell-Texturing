@@ -22,6 +22,9 @@ public class Shell : MonoBehaviour
     public float noiseMax = 1.0f;
 
 
+    public Color shellColor;
+
+
     void OnEnable()
     {
 
@@ -38,9 +41,6 @@ public class Shell : MonoBehaviour
         for (int i = 0; i < shellCount; i++)
         {
 
-            // Calculate the normalized y-position for the new quad
-            float yPosNormalized = (float)i / (float)(shellCount - 1);
-
             // Calculate the y-position for the new quad
             float yPos = step * i;
 
@@ -50,12 +50,13 @@ public class Shell : MonoBehaviour
             quad.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
 
             Renderer renderer = quad.GetComponent<Renderer>();
-            renderer.material.SetFloat("_Density", density);
             renderer.material.SetFloat("_ShellCount", shellCount);
+            renderer.material.SetFloat("_Density", density);
             renderer.material.SetFloat("_Threshold", yPos); 
             renderer.material.SetInt("_ShellIndex", i);
             renderer.material.SetFloat("_NoiseMin", noiseMin);
             renderer.material.SetFloat("_NoiseMax", noiseMax);
+            renderer.material.SetVector("_ShellColor", shellColor);
         }
     }
 }

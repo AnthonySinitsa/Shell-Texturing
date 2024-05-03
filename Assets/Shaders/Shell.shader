@@ -48,6 +48,7 @@ Shader "Custom/Shell"
             int _ShellIndex;
             float _NoiseMin;
             float _NoiseMax;
+            float3 _ShellColor;
 
             #include "HashFunction.cginc"
 
@@ -79,7 +80,7 @@ Shader "Custom/Shell"
                     discard;
                 }
                 // return fixed4(hashValue, hashValue, hashValue, 1);
-                return fixed4(0, 1, 0, 1) * attenuation;
+                return fixed4(_ShellColor, 1) * attenuation;
             }
             ENDCG
         }
