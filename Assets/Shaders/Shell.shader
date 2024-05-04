@@ -3,7 +3,6 @@ Shader "Custom/Shell"
     Properties
     {
         _Density ("Density", Float) = 100
-        _Threshold ("Threshold", Float) = 0.01
         _Attenuation ("Attenuation", Float) = 1.0
         _ShellIndex ("Shell Index", Int) = 0
         _NoiseMin ("NoiseMin", Float) = 0
@@ -34,49 +33,60 @@ Shader "Custom/Shell"
 
             struct v2f
             {
-                float4 vertex : SV_POSITION;
+                float4 pos : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float3 normal : TEXCOORD1;
                 float3 worldPos : TEXCOORD2;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            int _ShellIndex
+            int _ShellCount;
+            float _ShellLength
             float _Density;
-            float _Threshold;
-            float _Attenuation;
-            int _ShellIndex;
             float _NoiseMin;
             float _NoiseMax;
+            float _Attenuation;
             float3 _ShellColor;
 
+            // include Hash function
             #include "HashFunction.cginc"
 
             v2f vert (appdata v)
             {
                 v2f i;
+
+                float shellHeight = (float)_ShellIndex / (float)_ShellCount;
+
+                v.vertex.xyz += v.normal.xyz * _ShellLength * shellHeight;
+
                 i.normal = normalize(UnityObjectToWorldNormal(v.normal));
+
+                
                 i.worldPos = mul(unity_ObjectToWorld, v.vertex);
-                i.vertex = UnityObjectToClipPos(v.vertex);
-                i.uv = v.uv * _Density;
+                i.pos = UnityObjectToClipPos(v.vertex);
+
+                i.uv = v.uv;
+
                 return i;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
+                float2 uv = i.uv * _Density; // Round UV coordinates to the nearest integer
 
                 uint2 tid = uv;
                 uint seed = tid.x + 100 * tid.y;
 
+                float shellIndex = _ShellIndex;
+                float shellCount = _ShellCount;
+
                 float hashValue = lerp(_NoiseMin, _NoiseMax, hash(seed));
                 
-                // threshold is being set to 0.1
-                // 0.01 * 10.0 = 0.1
-                float threshold = _Threshold * 10.0;
-                float attenuation = pow(threshold, _Attenuation);
+                float h = shellIndex / shellCount;
 
-                if (hashValue <= threshold) {
+                float attenuation = pow(h, _Attenuation);
+
+                if (hashValue <= h) {
                     discard;
                 }
                 // return fixed4(hashValue, hashValue, hashValue, 1);
