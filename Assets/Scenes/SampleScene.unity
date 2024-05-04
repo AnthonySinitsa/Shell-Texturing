@@ -139,7 +139,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &470455909
 Transform:
   m_ObjectHideFlags: 0
@@ -169,6 +169,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quadPrefab: {fileID: 8325976221358250778, guid: fa721a96be8cf9549a0c9188fcb5160e, type: 3}
   shellCount: 16
+  shellLength: 0.15
   density: 100
   noiseMin: 0
   noiseMax: 1
@@ -405,6 +406,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   quadPrefab: {fileID: 6387279715055423320, guid: df229d1f6933b8b4ebe888daa8765a30, type: 3}
   shellCount: 16
+  shellLength: 0.15
   density: 100
   noiseMin: 0
   noiseMax: 1
