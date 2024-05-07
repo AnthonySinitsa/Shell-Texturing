@@ -45,10 +45,18 @@ Shader "Custom/Shell"
             v2f vert (appdata v)
             {
                 v2f i;
+
+                float shellHeight = (float)_ShellIndex / (float)_ShellCount;
+
+                v.vertex.xyz += v.normal.xyz * shellHeight;
+
                 i.normal = normalize(UnityObjectToWorldNormal(v.normal));
+
                 i.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 i.pos = UnityObjectToClipPos(v.vertex);
+
                 i.uv = v.uv;
+                
                 return i;
             }
 
@@ -64,9 +72,13 @@ Shader "Custom/Shell"
 
                 float rng = lerp(_NoiseMin, _NoiseMax, hash(seed));
 
-                // return fixed4(rng, rng, rng, 1);
+                float shellIndex = _ShellIndex;
+                float shellCount = _ShellCount;
 
-                if (rng > 0.01) {
+                // Normalized height of the shell, instead of 0, 1, 2, it ranges from 0 -> 1
+                float height = shellIndex / shellCount;
+                
+                if (rng > height) {
                     return fixed4(0, 1, 0, 1);
                 } else {
                     return fixed4(0, 0, 0, 1);
