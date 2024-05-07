@@ -85,9 +85,7 @@ Shader "Custom/Shell"
                 float rng = lerp(_NoiseMin, _NoiseMax, hash(seed));
 
                 // Calculate normalized height of shell
-                float shellIndex = _ShellIndex;
-                float shellCount = _ShellCount;
-                float height = shellIndex / shellCount;
+                float height = (float)_ShellIndex / (float)_ShellCount;
 
                 // Apply attenuation based on height and attenuation
                 float attenuation = pow(height, _Attenuation);
