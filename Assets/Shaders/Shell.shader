@@ -41,35 +41,67 @@ Shader "Custom/Shell"
 
             #include "HashFunction.cginc"
 
+
             v2f vert (appdata v)
             {
                 v2f i;
                 i.normal = normalize(UnityObjectToWorldNormal(v.normal));
                 i.worldPos = mul(unity_ObjectToWorld, v.vertex);
                 i.pos = UnityObjectToClipPos(v.vertex);
-                i.uv = v.uv * _Density;
+                i.uv = v.uv;
                 return i;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
+                // Display UV coordinates as colors
+                // return fixed4(i.uv.x, i.uv.y, 0, 1);
+
+                float2 uv = i.uv * _Density;
 
                 uint2 tid = uv;
-                uint seed = tid.x + 100 * tid.y;
+                uint seed = tid.x + 100 * tid.y + 100 * 10;
 
-                float hashValue = lerp(_NoiseMin, _NoiseMax, hash(seed));
-                
-                // threshold is being set to 0.1
-                // 0.01 * 10.0 = 0.1
-                float attenuation = pow(_ShellLength, _Attenuation);
+                float rng = lerp(_NoiseMin, _NoiseMax, hash(seed));
 
-                if (hashValue <= _ShellLength) {
-                    discard;
+                // return fixed4(rng, rng, rng, 1);
+
+                if (rng > 0.01) {
+                    return fixed4(0, 1, 0, 1);
+                } else {
+                    return fixed4(0, 0, 0, 1);
                 }
-                // return fixed4(hashValue, hashValue, hashValue, 1);
-                return fixed4(_ShellColor, 1) * attenuation;
             }
+
+            // v2f vert (appdata v)
+            // {
+            //     v2f i;
+            //     i.normal = normalize(UnityObjectToWorldNormal(v.normal));
+            //     i.worldPos = mul(unity_ObjectToWorld, v.vertex);
+            //     i.pos = UnityObjectToClipPos(v.vertex);
+            //     i.uv = v.uv * _Density;
+            //     return i;
+            // }
+
+            // fixed4 frag (v2f i) : SV_Target
+            // {
+            //     float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
+
+            //     uint2 tid = uv;
+            //     uint seed = tid.x + 100 * tid.y;
+
+            //     float hashValue = lerp(_NoiseMin, _NoiseMax, hash(seed));
+                
+            //     // threshold is being set to 0.1
+            //     // 0.01 * 10.0 = 0.1
+            //     float attenuation = pow(hashValue, _Attenuation);
+
+            //     if (hashValue <= _ShellLength) {
+            //         discard;
+            //     }
+            //     // return fixed4(hashValue, hashValue, hashValue, 1);
+            //     return fixed4(_ShellColor, 1) * attenuation;
+            // }
             ENDCG
         }
     }

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Shell : MonoBehaviour
 {
-    // public GameObject quadPrefab;
     public Mesh shellMesh;
     public Shader shellShader;
 
