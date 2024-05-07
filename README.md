@@ -57,4 +57,4 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 
 - So for a sphere, draw a bunch of spheres on top of each other
 
-- Then in the vertex shader, extrude the shells outwards from the normals based on desired distance
+- Then in the vertex shader, extrude the shells outwards from the normals based on desired distance: vertex.xyz += vertex.xyz * distance * height

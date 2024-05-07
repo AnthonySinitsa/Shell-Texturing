@@ -54,6 +54,7 @@ Shader "Custom/Shell"
                 shellHeight = pow(shellHeight, _ShellDistanceAttenuation);
 
                 // Move vertex position along normal direction to create shell effect
+                // This here extrudes the shells along the base vertex normal
                 v.vertex.xyz += v.normal.xyz * _ShellLength * shellHeight;
 
                 // Calculate normal and world position
