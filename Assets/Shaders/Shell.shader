@@ -47,17 +47,23 @@ Shader "Custom/Shell"
             {
                 v2f i;
 
+                // Caluclate normalized height of shell
                 float shellHeight = (float)_ShellIndex / (float)_ShellCount;
 
+                // Apply attentuation based on shell height
                 shellHeight = pow(shellHeight, _ShellDistanceAttenuation);
 
+                // Move vertex position along normal direction to create shell effect
                 v.vertex.xyz += v.normal.xyz * _ShellLength * shellHeight;
 
+                // Calculate normal and world position
                 i.normal = normalize(UnityObjectToWorldNormal(v.normal));
-
                 i.worldPos = mul(unity_ObjectToWorld, v.vertex);
+
+                // Calculate screen space position
                 i.pos = UnityObjectToClipPos(v.vertex);
 
+                // Pass UV coords
                 i.uv = v.uv;
                 
                 return i;
@@ -68,46 +74,30 @@ Shader "Custom/Shell"
                 // Display UV coordinates as colors
                 // return fixed4(i.uv.x, i.uv.y, 0, 1);
 
+                // Map UV coords to density
                 float2 uv = i.uv * _Density;
 
+                // Hash function seed
                 uint2 tid = uv;
                 uint seed = tid.x + 100 * tid.y + 100 * 10;
 
+                // Calculate noise value
                 float rng = lerp(_NoiseMin, _NoiseMax, hash(seed));
 
+                // Calculate normalized height of shell
                 float shellIndex = _ShellIndex;
                 float shellCount = _ShellCount;
-
-                // Normalized height of the shell, instead of 0, 1, 2, it ranges from 0 -> 1
                 float height = shellIndex / shellCount;
 
-                // Fake ambient occlusion
+                // Apply attenuation based on height and attenuation
                 float attenuation = pow(height, _Attenuation);
 
+                // If noise value is below normalized height, discard
                 if (rng <= height) discard;
 
-                return fixed4(_ShellColor, 1) * attenuation;
+                // Return color with attenuation applied
+                return fixed4(_ShellColor * attenuation, 1);
             }
-
-            // fixed4 frag (v2f i) : SV_Target
-            // {
-            //     float2 uv = floor(i.uv); // Round UV coordinates to the nearest integer
-
-            //     uint2 tid = uv;
-            //     uint seed = tid.x + 100 * tid.y;
-
-            //     float hashValue = lerp(_NoiseMin, _NoiseMax, hash(seed));
-                
-            //     // threshold is being set to 0.1
-            //     // 0.01 * 10.0 = 0.1
-            //     float attenuation = pow(hashValue, _Attenuation);
-
-            //     if (hashValue <= _ShellLength) {
-            //         discard;
-            //     }
-            //     // return fixed4(hashValue, hashValue, hashValue, 1);
-            //     return fixed4(_ShellColor, 1) * attenuation;
-            // }
             ENDCG
         }
     }
