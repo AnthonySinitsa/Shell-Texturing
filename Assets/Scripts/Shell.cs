@@ -7,6 +7,9 @@ public class Shell : MonoBehaviour
     public Shader shellShader;
 
 
+    public bool updateStatics = true;
+
+
     [Range(1, 256)]
     public int shellCount = 16;
 
@@ -70,8 +73,24 @@ public class Shell : MonoBehaviour
         }
     }
 
+    void Update() {
+        if (updateStatics) {
+            for (int i = 0; i < shellCount; i++) {
+                shells[i].GetComponent<MeshRenderer>().material.SetInt("_ShellCount", shellCount);
+                shells[i].GetComponent<MeshRenderer>().material.SetInt("_ShellIndex", i);
+                shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellLength", shellLength);
+                shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Density", density);
+                shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Attenuation", occlusionAttenuation);
+                shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellDistanceAttenuation", distanceAttenuation);
+                shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMin", noiseMin);
+                shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMax", noiseMax);
+                shells[i].GetComponent<MeshRenderer>().material.SetVector("_ShellColor", shellColor);
+            }
+        }
+    }
+
     void OnDisable() {
-        for (int i = 0; i < shells.Length; ++i) {
+        for (int i = 0; i < shells.Length; i++) {
             Destroy(shells[i]);
         }
         shells = null;
