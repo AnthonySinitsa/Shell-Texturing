@@ -362,7 +362,8 @@ MonoBehaviour:
   density: 100
   noiseMin: 0
   noiseMax: 1
-  shellColor: {r: 0, g: 1, b: 0.051280737, a: 0}
+  thickness: 1
+  shellColor: {r: 0.4292453, g: 1, b: 0.45834255, a: 0}
   occlusionAttenuation: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

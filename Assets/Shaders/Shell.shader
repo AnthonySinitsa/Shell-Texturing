@@ -36,6 +36,7 @@ Shader "Custom/Shell"
             float _Density;
             float _NoiseMin;
             float _NoiseMax;
+            float _Thickness;
             float _Attenuation;
             float _ShellDistanceAttenuation;
             float3 _ShellColor;
@@ -76,17 +77,34 @@ Shader "Custom/Shell"
                 // return fixed4(i.uv.x, i.uv.y, 0, 1);
 
                 // Map UV coords to density
+                // This multiplies uv coords to create more strands
                 float2 uv = i.uv * _Density;
+
+                // To work in local space after expanding them to wider range, we take fractional component. 
+                // Since uv coords by default range from 0 to 1 so then fractional part is in 0 to 1. 
+                // We multiply by 2 and subtract 1 to convert from 0 to 1 to -1 to 1 in order to shift origin of these local uv coords to center
+                float2 localUV = frac(uv) * 2 - 1;
+
+                // Local distance from local center
+                float localDistanceFromCenter = length(localUV);
 
                 // Hash function seed
                 uint2 tid = uv;
-                uint seed = tid.x + 100 * tid.y + 100 * 10;
+                uint seed = tid.x + 100 * tid.y;
 
                 // Calculate noise value
                 float rng = lerp(_NoiseMin, _NoiseMax, hash(seed));
 
                 // Calculate normalized height of shell
                 float height = (float)_ShellIndex / (float)_ShellCount;
+                
+                // This is condition for discarding pixels, if distance from local center is greater than thickness parameter, discard it.
+                // This also modifies thickenss and makes it thinner the higher it goes.
+                // If strange cutoff happens because of tappering, try replacing rng with 1 or some other value.
+                int outsideThickness = 
+                    (localDistanceFromCenter) > (_Thickness * (rng - height));
+
+                if (outsideThickness && _ShellIndex > 0) discard;
 
                 // Apply attenuation based on height and attenuation
                 float attenuation = pow(height, _Attenuation);

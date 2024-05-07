@@ -23,7 +23,7 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 
 - Quad is entirely green, essentially one big blade of grass
 
-- To get more blades of grass  seed = ⌊uv * density⌋  (density being the width and height of the field)
+- To get more blades of grass seed = ⌊uv * density⌋  (density being the width and height of the field)
 
 - With a density of 100, we have a field of 100 x 100 blades of grass
 
@@ -45,4 +45,15 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 
 - So for a sphere, draw a bunch of spheres on top of each other
 
-- Then in the vertex shader, extrude the shells outwards from the normals based on desired distance: vertex.xyz += vertex.xyz * distance * height
+- Then in the vertex shader, extrude the shells outwards from the normals based on desired distance:
+  - vertex.xyz += vertex.xyz * distance * height
+
+- Next to get the grass to look more like by making more strand like(thicker at bottom thinner at top)
+
+- We can give:
+  - local space = frac(uv * density)
+
+- The origin of space is in top left, so we translate it to center using:
+  - localUV = frac(uv) * 2 - 1;
+
+- Now we check if that distance is greater than our thickness: discard;
