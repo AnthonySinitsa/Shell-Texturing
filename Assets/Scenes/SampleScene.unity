@@ -355,12 +355,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shellMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
   shellShader: {fileID: 4800000, guid: 6fbbc244513bb7d428771a7d685430d9, type: 3}
-  shellCount: 1
-  shellLength: 0.15
+  shellCount: 32
+  shellLength: 0.1
+  distanceAttenuation: 1
   density: 100
   noiseMin: 0
   noiseMax: 1
   shellColor: {r: 0, g: 1, b: 0.051280737, a: 0}
+  occlusionAttenuation: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -15,6 +15,10 @@ public class Shell : MonoBehaviour
     public float shellLength = 0.15f;
 
 
+    [Range(0.01f, 3.0f)]
+    public float distanceAttenuation = 1.0f;
+
+
     [Range(1.0f, 1000.0f)]
     public float density = 10f;
 
@@ -28,6 +32,10 @@ public class Shell : MonoBehaviour
 
 
     public Color shellColor;
+
+
+    [Range(0.0f, 5.0f)]
+    public float occlusionAttenuation = 1.0f;
 
 
     private Material shellMaterial;
@@ -54,6 +62,8 @@ public class Shell : MonoBehaviour
             shells[i].GetComponent<MeshRenderer>().material.SetInt("_ShellIndex", i);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellLength", shellLength);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Density", density);
+            shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Attenuation", occlusionAttenuation);
+            shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellDistanceAttenuation", distanceAttenuation);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMin", noiseMin);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMax", noiseMax);
             shells[i].GetComponent<MeshRenderer>().material.SetVector("_ShellColor", shellColor);
