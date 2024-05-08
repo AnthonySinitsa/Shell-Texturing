@@ -58,6 +58,12 @@ public class Shell : MonoBehaviour
     [Range(0.0f, 1.0f)]
     public float occlusionBias = 0.0f;
 
+    [Range(0.0f, 1.0f)]
+    public float windStrength = 0.1f;
+
+
+    public Vector3 windDirection = new Vector3(0, 0, 1);
+
 
     private Material shellMaterial;
     private GameObject[] shells;
@@ -101,18 +107,7 @@ public class Shell : MonoBehaviour
 
     void Update() {
 
-        Vector3 direction = new Vector3(0, 0, 0);
-
-        // This changes direction hair is going to point, which is down
-        displacementDirection -= displacementDirection * Time.deltaTime * 10.0f;
-        if (direction == Vector3.zero) {
-            displacementDirection.y -= 10.0f * Time.deltaTime;
-        }
-        if (displacementDirection.magnitude > 1.0f) {
-            displacementDirection.Normalize();
-        }
-
-        Shader.SetGlobalVector("_ShellDirection", displacementDirection);
+        UpdateWindEffect();
 
         if (updateStatics) {
             for (int i = 0; i < shellCount; i++) {
@@ -134,6 +129,28 @@ public class Shell : MonoBehaviour
             }
         }
     }
+
+    void UpdateWindEffect()
+    {
+        // Calculate wind effect based on sine wave between 0 and 1
+        float windEffect = Mathf.Sin(Time.time) * 0.6f + 0.5f; // Map sine wave from [-1, 1] to [0, 1]
+
+        // Combine wind effect with wind strength
+        Vector3 windForce = windDirection * windEffect * windStrength;
+
+        // Apply wind force in addition to downward force
+        displacementDirection = Vector3.down + windForce;
+
+        // Normalize displacement direction
+        if (displacementDirection.magnitude > 1.0f)
+        {
+            displacementDirection.Normalize();
+        }
+
+        // Set global shader variable for wind direction
+        Shader.SetGlobalVector("_ShellDirection", displacementDirection);
+    }
+
 
     void OnDisable() {
         for (int i = 0; i < shells.Length; i++) {
