@@ -48,6 +48,10 @@ public class Shell : MonoBehaviour
     public float occlusionAttenuation = 1.0f;
 
 
+    [Range(0.0f, 1.0f)]
+    public float occlusionBias = 0.0f;
+
+
     private Material shellMaterial;
     private GameObject[] shells;
 
@@ -76,6 +80,7 @@ public class Shell : MonoBehaviour
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Thickness", thickness);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Attenuation", occlusionAttenuation);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellDistanceAttenuation", distanceAttenuation);
+            shells[i].GetComponent<MeshRenderer>().material.SetFloat("_OcclusionBias", occlusionBias);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMin", noiseMin);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMax", noiseMax);
             shells[i].GetComponent<MeshRenderer>().material.SetVector("_ShellColor", shellColor);
@@ -93,6 +98,7 @@ public class Shell : MonoBehaviour
                 shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Thickness", thickness);
                 shells[i].GetComponent<MeshRenderer>().material.SetFloat("_Attenuation", occlusionAttenuation);
                 shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellDistanceAttenuation", distanceAttenuation);
+                shells[i].GetComponent<MeshRenderer>().material.SetFloat("_OcclusionBias", occlusionBias);
                 shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMin", noiseMin);
                 shells[i].GetComponent<MeshRenderer>().material.SetFloat("_NoiseMax", noiseMax);
                 shells[i].GetComponent<MeshRenderer>().material.SetVector("_ShellColor", shellColor);
