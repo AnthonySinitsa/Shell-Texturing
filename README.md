@@ -49,7 +49,7 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 
 - Now we can translate shell textured grass from a plane to any arbitrary mesh by extruding the shell out from the normal of the base vertex:
 
-![vertexNormal](vertexNormal0.png)
+![vertexNormal](images/vertexNormal0.png)
 
 - So for a sphere, draw a bunch of spheres on top of each other
 
