@@ -110,6 +110,7 @@ Shader "Custom/Shell"
                 if (_EnableThickness == 1 && outsideThickness && _ShellIndex > 0) discard;
 
                 // Apply attenuation based on height and attenuation
+                // This is fake ambient occlusion
                 float attenuation = pow(height, _Attenuation);
 
                 // If noise value is below normalized height, discard
