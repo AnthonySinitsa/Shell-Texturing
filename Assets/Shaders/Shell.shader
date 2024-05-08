@@ -43,8 +43,6 @@ Shader "Custom/Shell"
             float3 _ShellColor;
 
             #include "HashFunction.cginc"
-            #include "LambertianLighting.cginc"
-
 
             v2f vert (appdata v)
             {
@@ -108,8 +106,8 @@ Shader "Custom/Shell"
                 if (_EnableThickness == 1 && outsideThickness && _ShellIndex > 0) discard;
 
                 // Calculate Lambertian diffuse lighting
-                // Assume the light direction is (0, 0, 1) for simplicity
-                float3 lightDir = float3(0, 0, 1);
+                // Assume the light direction is (0, 1, 1) for simplicity
+                float3 lightDir = float3(0, 1, 1);
                 float3 normal = normalize(i.normal);
                 float diffuseIntensity = max(dot(normal, lightDir), 0.0);
 

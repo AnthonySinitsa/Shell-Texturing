@@ -12,6 +12,10 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 ![Grass](image2.png)
 #### Illusion of fur
 ![Ball](ball0.png)
+#### Hair like strands
+![Hair](hairStrands.png)
+#### Lambertian diffuse lighting
+![Lighting](lambertianDiffuse.png)
 
 ### Steps Taken:
  
@@ -57,3 +61,13 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
   - localUV = frac(uv) * 2 - 1;
 
 - Now we check if that distance is greater than our thickness: discard;
+
+- Calculate Lambertian Diffuse Lighting
+  - Calculate the normal vector of the surface at each fragment. This is usually done in the vertex shader and interpolated across the surface for each fragment.
+    - surfaceNormal = normalize(fragmentNormal);
+  - Determine the direction of the incoming light. This can be a fixed direction if you have a single light source, or you may calculate it dynamically based on the position of light sources in your scene.
+    - lightDir = normalize(lightPosition - fragmentPosition);
+  - Find the cosine of the angle between the surface normal and the light direction vector. This can be done using the dot product of the normalized surface normal and the normalized light direction vectors.
+    - cosineTheta = dot(surfaceNormal, lightDir);
+  - Use Lambert's cosine law to calculate the diffuse reflection intensity. This is typically done by multiplying the cosine of the angle by the intensity of the light hitting the surface and the surface's diffuse reflectance coefficient (albedo).
+    - diffuseIntensity = max(cosineTheta, 0.0);
