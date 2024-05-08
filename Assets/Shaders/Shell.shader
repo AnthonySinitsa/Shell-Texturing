@@ -74,9 +74,6 @@ Shader "Custom/Shell"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // Display UV coordinates as colors
-                // return fixed4(i.uv.x, i.uv.y, 0, 1);
-
                 // Map UV coords to density
                 // This multiplies uv coords to create more strands
                 float2 uv = i.uv * _Density;
