@@ -62,6 +62,8 @@ public class Shell : MonoBehaviour
     private Material shellMaterial;
     private GameObject[] shells;
 
+    private Vector3 displacementDirection = new Vector3(0, 0, 0);
+
 
     void OnEnable()
     {
@@ -98,6 +100,20 @@ public class Shell : MonoBehaviour
     }
 
     void Update() {
+
+        Vector3 direction = new Vector3(0, 0, 0);
+
+        // This changes direction hair is going to point, which is down
+        displacementDirection -= displacementDirection * Time.deltaTime * 10.0f;
+        if (direction == Vector3.zero) {
+            displacementDirection.y -= 10.0f * Time.deltaTime;
+        }
+        if (displacementDirection.magnitude > 1.0f) {
+            displacementDirection.Normalize();
+        }
+
+        Shader.SetGlobalVector("_ShellDirection", displacementDirection);
+
         if (updateStatics) {
             for (int i = 0; i < shellCount; i++) {
                 shells[i].GetComponent<MeshRenderer>().material.SetInt("_EnableThickness", enableThickness ? 1 : 0);
