@@ -22,6 +22,8 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 ![Dandelion](images/dandelion.png)
 #### Gravity applied
 ![Gravity](images/gravity.png)
+#### Wind effect
+![Wind](images/wind.gif)
 
 ### Steps Taken:
  
