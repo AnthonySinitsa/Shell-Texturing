@@ -10,51 +10,68 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 ![Grass](image1.png)
 #### Iteration 3
 ![Grass](image2.png)
+#### Illusion of fur
+![Ball](ball0.png)
+#### Hair like strands
+![Hair](hairStrands.png)
+#### Lambertian diffuse lighting
+![Lighting](lambertianDiffuse.png)
+#### Vale's Half Lambert lighting
+![Lighting](halfLambert.png)
+#### No Occlusion Bias creates fluffy dandelion
+![Dandelion](dandelion.png)
 
 ### Steps Taken:
  
 - Render quad
 
-- Green pixel is grass and black is no grass
+- Give quad a seed value that was outputted by a hash function
 
-- Use white noise for random numbers
+- if rng > 0.01, render green color: else black
 
-- Hash function that takes seed number and shuffle around alot that it is unique
+- Quad is entirely green, essentially one big blade of grass
 
-- UV coords range from top left to bottom right
-
-- Take seed through hashing function to give us random number between 0-1
-
-- If value is > 0 return green
-
-- Plane should be entirely green(like one big grass)
-
-- To get more blades of grass  seed = ⌊uv * density⌋  (density being the width and height of the field)
+- To get more blades of grass seed = ⌊uv * density⌋  (density being the width and height of the field)
 
 - With a density of 100, we have a field of 100 x 100 blades of grass
 
-- Draw another quad(slightly higher than the ground)
+- Draw another quad(with new quad uv oords being slightly higher than the the previous quad)
 
 - Quad seed number will be the same which is good
 
-- Tut now instead of if(rng > 0) do if(rng > NewQuadHeight)
-
-- Then draw new square with the new height
+- Now instead of if(rng > 0) do if(rng > NewQuadHeight)
 
 - Draw 16 squares
 
-- Now discard the black pixels
+- Now discard the black pixels and now we have "grass"
 
 - To get some easy lighting just multiply the color * height^attenuation  (height of the quad)
 
-- With hashing function we compute a seed from the uv coords
+- Now we can translate shell textured grass from a plane to any arbitrary mesh by extruding the shell out from the normal of the base vertex:
 
-- The quads need to spawn between 0.0 and 0.1, but the threshold should be between 0.0 and 1.0
-
-- We can translate shell textured grass from a plane to any arbitrary mesh by extruding the shell out from the normal of the base vertex:
-
-![vertexNormal](vertexNormal.png)
+![vertexNormal](vertexNormal0.png)
 
 - So for a sphere, draw a bunch of spheres on top of each other
 
-- Then in the vertex shader, extrude the shells outwards from the normals based on desired distance
+- Then in the vertex shader, extrude the shells outwards from the normals based on desired distance:
+  - vertex.xyz += vertex.xyz * distance * height
+
+- Next to get the grass to look more like by making more strand like(thicker at bottom thinner at top)
+
+- We can give:
+  - local space = frac(uv * density)
+
+- The origin of space is in top left, so we translate it to center using:
+  - localUV = frac(uv) * 2 - 1;
+
+- Now we check if that distance is greater than our thickness: discard;
+
+- Calculate Lambertian Diffuse Lighting
+  - Calculate the normal vector of the surface at each fragment. This is usually done in the vertex shader and interpolated across the surface for each fragment.
+    - surfaceNormal = normalize(fragmentNormal);
+  - Determine the direction of the incoming light. This can be a fixed direction if you have a single light source, or you may calculate it dynamically based on the position of light sources in your scene.
+    - lightDir = normalize(lightPosition - fragmentPosition);
+  - Find the cosine of the angle between the surface normal and the light direction vector. This can be done using the dot product of the normalized surface normal and the normalized light direction vectors.
+    - cosineTheta = dot(surfaceNormal, lightDir);
+  - Use Lambert's cosine law to calculate the diffuse reflection intensity. This is typically done by multiplying the cosine of the angle by the intensity of the light hitting the surface and the surface's diffuse reflectance coefficient (albedo).
+    - diffuseIntensity = max(cosineTheta, 0.0);
