@@ -31,6 +31,7 @@ Shader "Custom/Shell"
             };
             
             int _EnableThickness;
+            int _UseHalfLambert;
             int _ShellIndex;
             int _ShellCount;
             float _ShellLength;
@@ -101,7 +102,7 @@ Shader "Custom/Shell"
                 // This also modifies thickenss and makes it thinner the higher it goes.
                 // If strange cutoff happens because of tappering, try replacing rng with 1 or some other value.
                 int outsideThickness = 
-                (localDistanceFromCenter) > (_Thickness * (rng - height));
+                    (localDistanceFromCenter) > (_Thickness * (rng - height));
                 
                 // This culls pixel if it is outside the thickenss of strand.
                 // EnableThickenss allows the option to switch between squares and strands
@@ -111,23 +112,31 @@ Shader "Custom/Shell"
                 // Assume the light direction is (0, 1, 1) for simplicity
                 float3 lightDir = float3(0, 1, 1);
                 float3 normal = normalize(i.normal);
-                float diffuseIntensity = max(dot(normal, lightDir), 0.0);
                 
-                // This is Valve's half lamber lighting. It's not physically based.
-                // Made dark areas feel less dark. This fixes my issue with a pitch black center
-                // Valve's half lambert squares the ndotl output, which brings values down.
-                float ndotl = DotClamped(i.normal, _WorldSpaceLightPos0) * 0.5f + 0.5f;
-                ndotl = ndotl * ndotl;
-                
+                // This is a check to either use Lambertiant Diffuse or Half Lambert
+                // Lambertiant on by default
+                float diffuseIntensity;
+                if (_UseHalfLambert == 1)
+                {
+                    // This is Valve's half lamber lighting. It's not physically based.
+                    // Made dark areas feel less dark. This fixes my issue with a pitch black center
+                    // Valve's half lambert squares the ndotl output, which brings values down.
+                    float ndotl = DotClamped(i.normal, _WorldSpaceLightPos0) * 0.5f + 0.5f;
+                    diffuseIntensity = ndotl * ndotl;
+                }
+                else
+                {
+                    diffuseIntensity = max(dot(normal, lightDir), 0.0);
+                }
+
                 // Apply attenuation based on height and attenuation
                 // This is fake ambient occlusion
-                float ambientOcclusion = pow(height, _Attenuation);
-                ambientOcclusion += _OcclusionBias;
+                float ambientOcclusion = pow(height, _Attenuation) + _OcclusionBias;
                 
                 // If noise value is below normalized height, discard
                 if (rng <= height) discard;
 
-                return fixed4(_ShellColor * ambientOcclusion * diffuseIntensity, 1);
+                return fixed4(_ShellColor * diffuseIntensity * ambientOcclusion, 1);
             }
             ENDCG
         }

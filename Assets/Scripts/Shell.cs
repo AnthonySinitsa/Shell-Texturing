@@ -7,19 +7,9 @@ public class Shell : MonoBehaviour
     public Shader shellShader;
 
 
-    public enum LightingMode
-    {
-        None,
-        Lambertian,
-        HalfLambert
-    }
-
-
-    public LightingMode lightingMode = LightingMode.Lambertian;
-
-
     public bool updateStatics = true;
     public bool enableThickness = true;
+    public bool useHalfLambert = false;
 
 
     [Range(1, 256)]
@@ -82,6 +72,7 @@ public class Shell : MonoBehaviour
             shells[i].transform.SetParent(this.transform, false);
 
             shells[i].GetComponent<MeshRenderer>().material.SetInt("_EnableThickness", enableThickness ? 1 : 0);
+            shells[i].GetComponent<MeshRenderer>().material.SetInt("_UseHalfLambert", useHalfLambert ? 1 : 0);
             shells[i].GetComponent<MeshRenderer>().material.SetInt("_ShellCount", shellCount);
             shells[i].GetComponent<MeshRenderer>().material.SetInt("_ShellIndex", i);
             shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellLength", shellLength);
@@ -100,6 +91,7 @@ public class Shell : MonoBehaviour
         if (updateStatics) {
             for (int i = 0; i < shellCount; i++) {
                 shells[i].GetComponent<MeshRenderer>().material.SetInt("_EnableThickness", enableThickness ? 1 : 0);
+                shells[i].GetComponent<MeshRenderer>().material.SetInt("_UseHalfLambert", useHalfLambert ? 1 : 0);
                 shells[i].GetComponent<MeshRenderer>().material.SetInt("_ShellCount", shellCount);
                 shells[i].GetComponent<MeshRenderer>().material.SetInt("_ShellIndex", i);
                 shells[i].GetComponent<MeshRenderer>().material.SetFloat("_ShellLength", shellLength);
