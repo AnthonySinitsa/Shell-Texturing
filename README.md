@@ -75,3 +75,9 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
     - cosineTheta = dot(surfaceNormal, lightDir);
   - Use Lambert's cosine law to calculate the diffuse reflection intensity. This is typically done by multiplying the cosine of the angle by the intensity of the light hitting the surface and the surface's diffuse reflectance coefficient (albedo).
     - diffuseIntensity = max(cosineTheta, 0.0);
+
+- Lambertian lighting, the intensity of the diffuse reflection is proportional to the cosine of the angle between the surface normal and the light direction. However, this can lead to very dark regions on surfaces that face away from the light source, which might not look visually pleasing.
+
+- Half Lambert lighting addresses this issue by squaring the cosine of the angle (often referred to as "cosine falloff") before using it in the lighting calculation. This has the effect of making dark areas less dark, resulting in a more even distribution of light across the surface.
+  - ndotl = DotClamped(i.normal, _WorldSpaceLightPos0) * 0.5 + 0.5;
+  - ndotl = ndotl * ndotl;
