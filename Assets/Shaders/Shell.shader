@@ -43,6 +43,7 @@ Shader "Custom/Shell"
             float3 _ShellColor;
 
             #include "HashFunction.cginc"
+            #include "LambertianLighting.cginc"
 
 
             v2f vert (appdata v)
@@ -106,6 +107,12 @@ Shader "Custom/Shell"
                 // EnableThickenss allows the option to switch between squares and strands
                 if (_EnableThickness == 1 && outsideThickness && _ShellIndex > 0) discard;
 
+                // Calculate Lambertian diffuse lighting
+                // Assume the light direction is (0, 0, 1) for simplicity
+                float3 lightDir = float3(0, 0, 1);
+                float3 normal = normalize(i.normal);
+                float diffuseIntensity = max(dot(normal, lightDir), 0.0);
+
                 // Apply attenuation based on height and attenuation
                 // This is fake ambient occlusion
                 float attenuation = pow(height, _Attenuation);
@@ -114,7 +121,7 @@ Shader "Custom/Shell"
                 if (rng <= height) discard;
 
                 // Return color with attenuation applied
-                return fixed4(_ShellColor * attenuation, 1);
+                return fixed4(_ShellColor * attenuation * diffuseIntensity, 1);
             }
             ENDCG
         }
