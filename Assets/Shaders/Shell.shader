@@ -41,6 +41,8 @@ Shader "Custom/Shell"
             float _Thickness;
             float _Attenuation;
             float _ShellDistanceAttenuation;
+            float _Curvature;
+            float _DisplacementStrength;
             float _OcclusionBias;
             float3 _ShellColor;
             
@@ -60,6 +62,10 @@ Shader "Custom/Shell"
                 // Move vertex position along normal direction to create shell effect
                 // This here extrudes the shells along the base vertex normal
                 v.vertex.xyz += v.normal.xyz * _ShellLength * shellHeight;
+
+                float stiffness = pow(shellHeight, _Curvature);
+
+                v.vertex.xyz += stiffness * _DisplacementStrength;
 
                 // Calculate normal and world position
                 i.normal = normalize(UnityObjectToWorldNormal(v.normal));

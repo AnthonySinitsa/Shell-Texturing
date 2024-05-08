@@ -81,3 +81,9 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 - Half Lambert lighting addresses this issue by squaring the cosine of the angle (often referred to as "cosine falloff") before using it in the lighting calculation. This has the effect of making dark areas less dark, resulting in a more even distribution of light across the surface.
   - ndotl = DotClamped(i.normal, _WorldSpaceLightPos0) * 0.5 + 0.5;
   - ndotl = ndotl * ndotl;
+
+## Upgrades
+
+- Use some texture data instead of white noise
+
+- Fluffy fur breakdown
