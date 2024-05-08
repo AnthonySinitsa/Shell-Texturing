@@ -5,21 +5,21 @@ The first two iterations use the CPU to calculate positions of quads
 The third iteration is a code overhaul that uses the GPU entirely(AKA even faster and efficienter)
 
 #### Iteration 1
-![Grass](image0.png)
+![Grass](images/image0.png)
 #### Iteration 2
-![Grass](image1.png)
+![Grass](images/image1.png)
 #### Iteration 3
-![Grass](image2.png)
+![Grass](images/image2.png)
 #### Illusion of fur
-![Ball](ball0.png)
+![Ball](images/ball0.png)
 #### Hair like strands
-![Hair](hairStrands.png)
+![Hair](images/hairStrands.png)
 #### Lambertian diffuse lighting
-![Lighting](lambertianDiffuse.png)
+![Lighting](images/lambertianDiffuse.png)
 #### Vale's Half Lambert lighting
-![Lighting](halfLambert.png)
+![Lighting](images/halfLambert.png)
 #### No Occlusion Bias creates fluffy dandelion
-![Dandelion](dandelion.png)
+![Dandelion](images/dandelion.png)
 
 ### Steps Taken:
  
