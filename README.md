@@ -16,6 +16,10 @@ The third iteration is a code overhaul that uses the GPU entirely(AKA even faste
 ![Hair](hairStrands.png)
 #### Lambertian diffuse lighting
 ![Lighting](lambertianDiffuse.png)
+#### Vale's Half Lambert lighting
+![Lighting](halfLambert.png)
+#### No Occlusion Bias creates fluffy dandelion
+![Dandelion](dandelion.png)
 
 ### Steps Taken:
  

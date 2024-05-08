@@ -121,7 +121,7 @@ Shader "Custom/Shell"
                     // This is Valve's half lamber lighting. It's not physically based.
                     // Made dark areas feel less dark. This fixes my issue with a pitch black center
                     // Valve's half lambert squares the ndotl output, which brings values down.
-                    float ndotl = DotClamped(i.normal, _WorldSpaceLightPos0) * 0.5f + 0.5f;
+                    float ndotl = DotClamped(i.normal, _WorldSpaceLightPos0) * 0.5 + 0.5;
                     diffuseIntensity = ndotl * ndotl;
                 }
                 else
@@ -132,6 +132,7 @@ Shader "Custom/Shell"
                 // Apply attenuation based on height and attenuation
                 // This is fake ambient occlusion
                 float ambientOcclusion = pow(height, _Attenuation) + _OcclusionBias;
+                ambientOcclusion = saturate(ambientOcclusion);
                 
                 // If noise value is below normalized height, discard
                 if (rng <= height) discard;
