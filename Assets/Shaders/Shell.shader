@@ -30,6 +30,7 @@ Shader "Custom/Shell"
                 float3 worldPos : TEXCOORD2;
             };
 
+            int _EnableThickness;
             int _ShellIndex;
             int _ShellCount;
             float _ShellLength;
@@ -104,7 +105,9 @@ Shader "Custom/Shell"
                 int outsideThickness = 
                     (localDistanceFromCenter) > (_Thickness * (rng - height));
 
-                if (outsideThickness && _ShellIndex > 0) discard;
+                // This culls pixel if it is outside the thickenss of strand.
+                // EnableThickenss allows the option to switch between squares and strands
+                if (_EnableThickness == 1 && outsideThickness && _ShellIndex > 0) discard;
 
                 // Apply attenuation based on height and attenuation
                 float attenuation = pow(height, _Attenuation);

@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0833859168693e44bf937ee763f415e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shellMesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+  shellMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   shellShader: {fileID: 4800000, guid: 6fbbc244513bb7d428771a7d685430d9, type: 3}
   updateStatics: 0
   shellCount: 32
