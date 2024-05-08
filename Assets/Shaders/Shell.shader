@@ -3,7 +3,7 @@ Shader "Custom/Shell"
     SubShader
     {
         Tags { "LightMode" = "ForwardBase" }
-
+        
         Pass
         {
             Cull Off
@@ -11,17 +11,17 @@ Shader "Custom/Shell"
             
             #pragma vertex vert
             #pragma fragment frag
-
+            
             #include "UnityPBSLighting.cginc"
             #include "AutoLight.cginc"
-
+            
             struct appdata
             {
                 float4 vertex : POSITION;
                 float3 normal : NORMAL;
                 float2 uv : TEXCOORD0;
             };
-
+            
             struct v2f
             {
                 float4 pos : SV_POSITION;
@@ -29,7 +29,7 @@ Shader "Custom/Shell"
                 float3 normal : TEXCOORD1;
                 float3 worldPos : TEXCOORD2;
             };
-
+            
             int _EnableThickness;
             int _ShellIndex;
             int _ShellCount;
@@ -42,8 +42,9 @@ Shader "Custom/Shell"
             float _ShellDistanceAttenuation;
             float _OcclusionBias;
             float3 _ShellColor;
-
+            
             #include "HashFunction.cginc"
+            
 
             v2f vert (appdata v)
             {
@@ -73,26 +74,26 @@ Shader "Custom/Shell"
             }
 
             fixed4 frag (v2f i) : SV_Target
-            {
+            {   
                 // Map UV coords to density
                 // This multiplies uv coords to create more strands
                 float2 uv = i.uv * _Density;
-
+                
                 // To work in local space after expanding them to wider range, we take fractional component. 
                 // Since uv coords by default range from 0 to 1 so then fractional part is in 0 to 1. 
                 // We multiply by 2 and subtract 1 to convert from 0 to 1 to -1 to 1 in order to shift origin of these local uv coords to center
                 float2 localUV = frac(uv) * 2 - 1;
-
+                
                 // Local distance from local center
                 float localDistanceFromCenter = length(localUV);
-
+                
                 // Hash function seed
                 uint2 tid = uv;
                 uint seed = tid.x + 100 * tid.y;
-
+                
                 // Calculate noise value
                 float rng = lerp(_NoiseMin, _NoiseMax, hash(seed));
-
+                
                 // Calculate normalized height of shell
                 float height = (float)_ShellIndex / (float)_ShellCount;
                 
@@ -100,33 +101,33 @@ Shader "Custom/Shell"
                 // This also modifies thickenss and makes it thinner the higher it goes.
                 // If strange cutoff happens because of tappering, try replacing rng with 1 or some other value.
                 int outsideThickness = 
-                    (localDistanceFromCenter) > (_Thickness * (rng - height));
-
+                (localDistanceFromCenter) > (_Thickness * (rng - height));
+                
                 // This culls pixel if it is outside the thickenss of strand.
                 // EnableThickenss allows the option to switch between squares and strands
                 if (_EnableThickness == 1 && outsideThickness && _ShellIndex > 0) discard;
-
+                
                 // Calculate Lambertian diffuse lighting
                 // Assume the light direction is (0, 1, 1) for simplicity
                 float3 lightDir = float3(0, 1, 1);
                 float3 normal = normalize(i.normal);
                 float diffuseIntensity = max(dot(normal, lightDir), 0.0);
-
+                
                 // This is Valve's half lamber lighting. It's not physically based.
                 // Made dark areas feel less dark. This fixes my issue with a pitch black center
                 // Valve's half lambert squares the ndotl output, which brings values down.
                 float ndotl = DotClamped(i.normal, _WorldSpaceLightPos0) * 0.5f + 0.5f;
-                ndotl = ndotl * nodtl;
-
+                ndotl = ndotl * ndotl;
+                
                 // Apply attenuation based on height and attenuation
                 // This is fake ambient occlusion
-                float attenuation = pow(height, _Attenuation);
-
+                float ambientOcclusion = pow(height, _Attenuation);
+                ambientOcclusion += _OcclusionBias;
+                
                 // If noise value is below normalized height, discard
                 if (rng <= height) discard;
 
-                // Return color with attenuation applied
-                return fixed4(_ShellColor * attenuation * diffuseIntensity, 1);
+                return fixed4(_ShellColor * ambientOcclusion * diffuseIntensity, 1);
             }
             ENDCG
         }

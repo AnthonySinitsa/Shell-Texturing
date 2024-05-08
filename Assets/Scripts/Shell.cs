@@ -7,9 +7,18 @@ public class Shell : MonoBehaviour
     public Shader shellShader;
 
 
-    public bool updateStatics = true;
-    
+    public enum LightingMode
+    {
+        None,
+        Lambertian,
+        HalfLambert
+    }
 
+
+    public LightingMode lightingMode = LightingMode.Lambertian;
+
+
+    public bool updateStatics = true;
     public bool enableThickness = true;
 
 
