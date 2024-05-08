@@ -356,6 +356,7 @@ MonoBehaviour:
   shellMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   shellShader: {fileID: 4800000, guid: 6fbbc244513bb7d428771a7d685430d9, type: 3}
   updateStatics: 0
+  enableThickness: 0
   shellCount: 32
   shellLength: 0.1
   distanceAttenuation: 1
