@@ -1,4 +1,4 @@
-# Shell-Texturing WIP
+# Shell-Texturing
 
 The first two iterations use the CPU to calculate positions of quads
 
